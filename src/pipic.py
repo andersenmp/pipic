@@ -23,8 +23,6 @@ def main():
     config = ConfigParser.ConfigParser()
     config.readfp(open('parameters.ini'))
     print 'Service version %s started' %  config.get('app','version',0)
-    #print 'Connecting mail server'
-    #mail_server = IMAPGmail(config.get('gmail','user', 0), config.get('gmail','password',0))
     allowed_emails =  [ email for email in config.get('app','allowed_emails',0).split(',') ]
 
     while True:
@@ -41,7 +39,7 @@ def main():
                         print 'Email %s allowed!' % mail['From']
                         pic_name = 'pics/pic_'+str(time.time())+'.jpg'
                         print 'Taking picture'
-                        takePic(pic_name)
+                        takePic(pic_name,config.getboolean('motion','present'))
                         print 'Sending mail to ' + mail['From']  + ' with pic ' +  pic_name
                         mail_smtp.sendMail(mail['To'], mail['From'],'Hello from PiPic','There you go!',pic_name)
                     else:
@@ -88,12 +86,13 @@ def startStopMotion():
     os.system(cmd)
 
 
-def takePic(pic_name):
-    #cmd = 'fswebcam -r 640x480 -d /dev/video0 --jpeg 95 ' + pic_name
+def takePic(pic_name,motion):
     cmd = 'fswebcam -r 640x480 -S 15 --jpeg 95 --title "PiPic" --subtitle "Framboesa Pi" --info "WebCam 1" --input 0 --set brightness=50% --set framerate=15 -d /dev/video0 --save ' + pic_name
-    startStopMotion()
+    if motion:
+        startStopMotion()
     os.system(cmd)
-    startStopMotion()
+    if motion :
+        startStopMotion()
 
 # Standard boilerplate to call the main() function to begin
 # the program.
