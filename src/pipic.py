@@ -89,8 +89,11 @@ def startStopMotion():
 
 
 def takePic(pic_name,motion):
-    cmd = 'fswebcam -r 640x480 -S 15 --jpeg 95 --title "PiPic" --subtitle "Framboesa Pi" --info "WebCam 1" --input 0 --set brightness=50% --set framerate=15 -d /dev/video0 --save ' + pic_name
-    cmd = './imagesnap -q -w 1 ' + pic_name
+    if sys.platform = 'darwin':
+        cmd = './imagesnap -q -w 1 ' + pic_name
+    else:
+        cmd = 'fswebcam -r 640x480 -S 15 --jpeg 95 --title "PiPic" --subtitle "Framboesa Pi" --info "WebCam 1" --input 0 --set brightness=50% --set framerate=15 -d /dev/video0 --save ' + pic_name
+
     if motion:
         startStopMotion()
     os.system(cmd)
