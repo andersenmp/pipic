@@ -9,6 +9,7 @@
     :copyright: (c) 2013 by Andersen Pecorone.
     :license: LICENSE_NAME, see LICENSE_FILE for more details.
 """
+
 # import modules used here
 import sys, os, subprocess
 import ConfigParser
@@ -23,6 +24,7 @@ def main():
     config = ConfigParser.ConfigParser()
     config.readfp(open('parameters.ini'))
     print 'Service version %s started' %  config.get('app','version',0)
+    print 'Running on %s' % sys.platform
     allowed_emails =  [ email for email in config.get('app','allowed_emails',0).split(',') ]
 
     while True:
@@ -88,6 +90,7 @@ def startStopMotion():
 
 def takePic(pic_name,motion):
     cmd = 'fswebcam -r 640x480 -S 15 --jpeg 95 --title "PiPic" --subtitle "Framboesa Pi" --info "WebCam 1" --input 0 --set brightness=50% --set framerate=15 -d /dev/video0 --save ' + pic_name
+    cmd = './imagesnap -q -w 1 ' + pic_name
     if motion:
         startStopMotion()
     os.system(cmd)
