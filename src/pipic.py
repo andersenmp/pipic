@@ -21,6 +21,8 @@ from SMTPGmail import SMTPGmail
 # Gather our code in a main() function
 def main():
     allowed_emails = []
+    autoPic = False
+    autoEmail = ""
     config = ConfigParser.ConfigParser()
     config.readfp(open('parameters.ini'))
     print 'Service version %s started' %  config.get('app','version',0)
@@ -29,6 +31,16 @@ def main():
 
     while True:
         try:
+            if autoPic:
+                print 'autoPic is on'
+                mail_smtp = SMTPGmail(config.get('gmail','user',0), config.get('gmail','password',0))
+                pic_name = 'pics/pic_'+str(time.time())+'.jpg'
+                print 'Taking picture'
+                takePic(pic_name,config.getboolean('motion','present'))
+                print 'Sending autoEmail to ' + autoEmail  + ' with pic ' +  pic_name
+                mail_smtp.sendMail(config.get('gmail','user', 0), autoEmail,'Hello from PiPic','There you go!',pic_name)
+                mail_smtp.logout()
+
             print 'Connecting IMAP server'
             mail_server = IMAPGmail(config.get('gmail','user', 0), config.get('gmail','password',0))
             print 'Fetching mails'
@@ -37,6 +49,14 @@ def main():
             if mails:
                 mail_smtp = SMTPGmail(config.get('gmail','user',0), config.get('gmail','password',0))
                 for mail in mails:
+                    if mail["Subject"] == "autoPic=on":
+                        autoPic = True
+                        autoEmail = mail["From"]
+                        print 'autoPic is on for ' + autoEmail
+                    elif mail["Subject"] == "autoPic=off":
+                        autoPic = False
+                        autoEmail = ""
+                        print 'autoPic is off'
                     if isEmailAllowed(mail['From'], allowed_emails):
                         print 'Email %s allowed!' % mail['From']
                         pic_name = 'pics/pic_'+str(time.time())+'.jpg'
@@ -89,7 +109,7 @@ def startStopMotion():
 
 
 def takePic(pic_name,motion):
-    if sys.platform = 'darwin':
+    if sys.platform == 'darwin':
         cmd = './imagesnap -q -w 1 ' + pic_name
     else:
         cmd = 'fswebcam -r 640x480 -S 15 --jpeg 95 --title "PiPic" --subtitle "Framboesa Pi" --info "WebCam 1" --input 0 --set brightness=50% --set framerate=15 -d /dev/video0 --save ' + pic_name

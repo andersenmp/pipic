@@ -33,3 +33,23 @@ Pipic is adapted to work with motion (https://github.com/sackmotion/motion) in c
         - fswebcam (https://github.com/fsphil/fswebcam) - Tested in Raspian (Raspberry PI Model B), LUMBUTU (eee-pci) 
     Mac OS X
         - ImageSnap (http://iharder.sourceforge.net/current/macosx/imagesnap/)
+
+========================
+
+3 - How to install
+
+    git clone https://github.com/andersenmp/pipic.git
+    
+    Configure pipic/src/parameters.ini
+
+    [app]
+    version = 0.0
+    standby_time = 15
+    allowed_emails = email@gmail.com
+
+    [gmail]
+    user = email@gmail.com
+    password = pass4Email
+
+    [motion]
+    present = 0
