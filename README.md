@@ -40,6 +40,8 @@ Pipic is adapted to work with motion (https://github.com/sackmotion/motion) in c
 
     git clone https://github.com/andersenmp/pipic.git
     
+    Copy pipic/src/parameters.dpl to pipic/src/parameters.ini
+    
     Configure pipic/src/parameters.ini
 
     [app]
