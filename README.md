@@ -11,11 +11,13 @@ Pipic
 1 -What is it?
 
 Pipic was developed mainly for 3 resons:
+
     - Learn Python
     - Play with Raspberry Pi, Arduino and some eletronic stuff
     - Take pictures of my cat while I'm traveling (='.'=)
 
 It performs the following flow:
+
     - Checks every {n} seconds an Gmail account
     - Verify if there is non-read email
     - If there is new email, then check if is a allowed email
