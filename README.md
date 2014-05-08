@@ -3,7 +3,7 @@ Pipic
 ========================
 
     1 - What is it?
-    2 - Dependancies
+    2 - Dependencies
     3 - How to install
 
 ========================
